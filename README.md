@@ -1,11 +1,24 @@
 # NEUBEH 545 – Quantitative Methods in Neuroscience
-### MATLAB Tutorials
+### MATLAB and Python Tutorials
 
-This repository contains the MATLAB tutorial scripts for **NEUBEH/PBIO 545: Quantitative Methods in Neuroscience**, a graduate course at the University of Washington. The tutorials provide hands-on, interactive introductions to the mathematical and computational tools central to modern systems neuroscience. Each script is designed to be run section by section in MATLAB, with exercises and homework problems embedded throughout.
+This repository contains the tutorial material for **NEUBEH/PBIO 545: Quantitative Methods in Neuroscience**, a graduate course at the University of Washington. The tutorials provide hands-on, interactive introductions to the mathematical and computational tools central to modern systems neuroscience. Each one is designed to be worked through section by section, with the narrative explanations and homework problems embedded alongside the code.
+
+
+## Repository Layout
+
+```
+matlab/     MATLAB tutorial scripts, helper functions, and data files
+python/     Jupyter notebook versions of the tutorials (in progress)
+```
+
+The MATLAB scripts are the original course material and are complete. The
+Python notebooks mirror the same topics; see `python/README.md` for setup.
 
 ---
 
 ## Tutorials
+
+File paths below are relative to `matlab/`.
 
 ### 1. Linear Algebra — `LinearAlgebra.m`
 *Author: Fred Rieke*
@@ -153,12 +166,27 @@ An introduction to decoding and classification, built around a fine orientation 
 
 ## Getting Started
 
+### MATLAB
+
 1. Clone or download this repository.
-2. Add the repository folder to your MATLAB path: `addpath('/path/to/NEUBEH545')`.
+2. Add the MATLAB folder to your path: `addpath('/path/to/NEUBEH545/matlab')`.
 3. Open a tutorial script (e.g., `LinearAlgebra.m`) and run it section by section using **Ctrl+Enter** (or **Cmd+Enter** on Mac) to execute one cell at a time.
 4. Read the comments carefully — the narrative explanations and homework questions are embedded in the code.
 
 MATLAB R2014b or later is recommended. No additional toolboxes beyond the Statistics and Signal Processing Toolboxes are required. `ClassificationTutorial.m` implements its methods from scratch and uses the Statistics Toolbox only for the optional support vector machine section, falling back to a hand-written classifier when `fitcsvm` is unavailable.
+
+### Python / Jupyter
+
+See [`python/README.md`](python/README.md) for environment setup. In short:
+
+```bash
+cd python
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+jupyter lab
+```
+
+Contributors should run `nbstripout --install` once inside the repository so that notebook outputs stay out of the commit history.
 
 ---
 
