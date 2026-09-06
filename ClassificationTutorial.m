@@ -460,18 +460,58 @@ grid on
 % large, and amplifies directions in which the noise is small.
 
 % ----- Build intuition in two dimensions first -----
-% Pick two neurons on opposite flanks of the tuning curve, where the signal
-% is largest.
-[~, ord] = sort(mu_B - mu_A, 'descend');
-n1 = ord(1);            % strongly prefers B
-n2 = ord(end);          % strongly prefers A
-pair = [n1 n2];
+%
+% A word about what follows. If we plot two neurons' responses to the 88
+% and 92 degree stimuli, the two clouds sit almost exactly on top of each
+% other. That is not a defect of the plot -- it is the whole point of the
+% fine discrimination task. The best single neuron reaches an AUC of only
+% about 0.6, so no PAIR of neurons can separate these stimuli either, and
+% any boundary we draw would run through the middle of one indistinguishable
+% blob. You cannot see a 4 degree effect by eye, which is exactly why the
+% population analysis in the rest of this section is necessary.
+%
+% So for the two-dimensional PICTURES -- here and in the SVM section --
+% we switch to a COARSER discrimination, 84 vs 96 degrees. That separation
+% is chosen so the best available PAIR of neurons classifies at roughly 78
+% percent: clearly better than chance, so the boundary is meaningful and
+% you can see where it belongs, but far from perfect, so the two clouds
+% still overlap and the picture stays honest about what real data looks
+% like. The classifier mathematics is identical; only the difficulty
+% changes. Every population result stays on the fine 88-vs-92 task.
 
-fprintf('\n2-D example uses neurons %d (%.1f deg) and %d (%.1f deg)\n', ...
-        n1, pref_oris(n1), n2, pref_oris(n2));
+ori_C = theta_center - 6;                % 84 deg, class 0
+ori_D = theta_center + 6;                % 96 deg, class 1
 
-P_A = X_A(:, pair);
-P_B = X_B(:, pair);
+mu_C = tuning_mean(pref_oris, kappa, ori_C, baseline, gain);
+mu_D = tuning_mean(pref_oris, kappa, ori_D, baseline, gain);
+
+% For these pictures we also add a shared GAIN fluctuation: on some trials
+% the whole population is more responsive than on others (attention, arousal,
+% state). This is the dominant mode of shared variability in cortex, and it
+% is what makes the response clouds tilted rather than round. Part VII
+% studies its consequences properly.
+gain_sd = 0.25;
+X_C = sample_trials(mu_C, n_trials, fano, L_indep) .* (1 + gain_sd*randn(n_trials,1));
+X_D = sample_trials(mu_D, n_trials, fano, L_indep) .* (1 + gain_sd*randn(n_trials,1));
+X_C = max(X_C, 0);
+X_D = max(X_D, 0);
+
+% For the coarse task, the two most useful neurons are simply the one that
+% most prefers each stimulus.
+[~, n1] = max(mu_D - mu_C);              % strongly prefers 120 deg
+[~, n2] = min(mu_D - mu_C);              % strongly prefers 60 deg
+pair = [n2 n1];                          % x axis = 60-preferring neuron
+
+P_A = X_C(:, pair);
+P_B = X_D(:, pair);
+
+% How good is this pair, honestly? Cross-validate it.
+acc_pair = cv_accuracy([P_A; P_B], [zeros(n_trials,1); ones(n_trials,1)], 5, ...
+                       @(a,b,c) lda_predict(a, b, c, 0));
+
+fprintf('\n2-D example (%g vs %g deg) uses neurons %d (%.1f deg) and %d (%.1f deg)\n', ...
+        ori_C, ori_D, pair(1), pref_oris(pair(1)), pair(2), pref_oris(pair(2)));
+fprintf('This pair classifies at %.1f%% (5-fold cross-validated)\n', 100*acc_pair);
 
 [w_lda2, b_lda2] = lda_train(P_A, P_B, 0);
 w_dom2 = (mean(P_B,1) - mean(P_A,1))';       % difference-of-means axis
@@ -482,12 +522,21 @@ plot(P_A(:,1), P_A(:,2), '.', 'MarkerSize', 6, 'Color',[0.20 0.40 0.85])
 plot(P_B(:,1), P_B(:,2), '.', 'MarkerSize', 6, 'Color',[0.85 0.30 0.25])
 plot(mean(P_A(:,1)), mean(P_A(:,2)), 'o','MarkerSize',10,'MarkerFaceColor',[0.10 0.20 0.55],'MarkerEdgeColor','k')
 plot(mean(P_B(:,1)), mean(P_B(:,2)), 'o','MarkerSize',10,'MarkerFaceColor',[0.55 0.10 0.10],'MarkerEdgeColor','k')
-draw_boundary(w_lda2, b_lda2, [P_A;P_B], 'k', 'LDA boundary')
+draw_boundary(w_lda2, b_lda2, [P_A;P_B], 'k', '')
+% Also draw the axis joining the two class means, for comparison
+mid = (mean(P_A,1) + mean(P_B,1))/2;
+arrow_scale = 6;
+quiver(mid(1), mid(2), w_dom2(1)/norm(w_dom2)*arrow_scale, ...
+       w_dom2(2)/norm(w_dom2)*arrow_scale, 0, 'LineWidth', 2, ...
+       'Color', [0.95 0.65 0.15], 'MaxHeadSize', 1)
+quiver(mid(1), mid(2), w_lda2(1)/norm(w_lda2)*arrow_scale, ...
+       w_lda2(2)/norm(w_lda2)*arrow_scale, 0, 'LineWidth', 2, ...
+       'Color', [0.1 0.1 0.1], 'MaxHeadSize', 1)
 axis square
-xlabel(sprintf('Neuron %d (pref %.0f deg)', n1, pref_oris(n1)))
-ylabel(sprintf('Neuron %d (pref %.0f deg)', n2, pref_oris(n2)))
-title('Two neurons, two stimuli, one boundary')
-legend(sprintf('%g deg', ori_A), sprintf('%g deg', ori_B), 'Location','northwest')
+xlabel(sprintf('Neuron %d (pref %.0f deg)', pair(1), pref_oris(pair(1))))
+ylabel(sprintf('Neuron %d (pref %.0f deg)', pair(2), pref_oris(pair(2))))
+title(sprintf('Two neurons, two stimuli, one boundary (%.0f%%)', 100*acc_pair))
+legend(sprintf('%g deg', ori_C), sprintf('%g deg', ori_D), 'Location','northeast')
 
 % ----- Project onto the discriminant axis -----
 proj_A = P_A * w_lda2;
@@ -501,7 +550,20 @@ histogram(proj_B, ed, 'FaceColor',[0.85 0.30 0.25],'FaceAlpha',0.5,'EdgeColor','
 xlabel('Projection onto LDA axis'); ylabel('Trials')
 title(sprintf('After projection: a 1-D problem, AUC = %.3f', auc2))
 
-% Notice what just happened. A two-dimensional classification problem
+% Now the geometry is legible: two tilted clouds, a boundary between them,
+% and two arrows -- the LDA axis in black, the difference-of-means axis in
+% orange. The clouds are tilted along the diagonal because the shared gain
+% fluctuation pushes both neurons up and down together.
+%
+% Here the two arrows nearly coincide, and it is worth understanding why.
+% The shared noise runs along the (+1,+1) diagonal, while the signal is
+% OPPONENT -- stimulus D drives one neuron up and the other down, along
+% (-1,+1). Signal and noise are close to orthogonal, so discounting the
+% noise barely rotates the readout. Part VII constructs the opposite case,
+% where the noise lies along the signal and the distinction between the
+% two axes becomes the whole story.
+%
+% Notice also what just happened. A two-dimensional classification problem
 % became the one-dimensional signal detection problem of Part I. This is
 % true of every linear classifier and it is why Part I was worth the time:
 % ROC, AUC, and d-prime apply unchanged to the projected variable.
@@ -806,59 +868,99 @@ end
 
 % ----- Linear kernel is not always enough -----
 % Consider a genuinely nonlinear problem: discriminate CARDINAL
-% orientations (near 0 and 90) from OBLIQUE ones (near 45 and 135). In the
-% two-neuron space above, the cardinal trials form two separate clusters
-% that surround the oblique cluster. No straight line can separate them.
+% orientations (0 and 90) from OBLIQUE ones (45 and 135), reading out from
+% two neurons preferring 22.5 and 67.5 degrees. Those preferences are
+% chosen to sit exactly between the stimuli, and the consequence is worth
+% working out on paper before you look at the plot:
+%
+%       stimulus     neuron 22.5     neuron 67.5
+%          0 deg        high            low
+%         90 deg        low             high
+%         45 deg        high            high
+%        135 deg        low             low
+%
+% Each neuron alone is completely uninformative about the category: neuron
+% 22.5 is high for one cardinal (0) and one oblique (45). The category is
+% the EXCLUSIVE OR of the two responses, and the four clusters sit at the
+% four corners of a square with the two classes on opposite diagonals.
+% This is the canonical problem that no straight line can solve, and it is
+% not a contrived one -- it is what "the information is present but not
+% linearly available" actually looks like.
+%
+% We use a higher-contrast stimulus for this panel so the four clusters
+% separate cleanly; the geometry is the point, not the difficulty.
 
 oris_card = [0 90];
 oris_obl  = [45 135];
-n_tr_k    = 200;
+n_tr_k    = 250;
+gain_hi   = 20;                          % higher contrast for this example
 
 Xc = []; Xo = [];
 for o = oris_card
-    Xc = [Xc; sample_trials(tuning_mean(pref_oris,kappa,o,baseline,gain), n_tr_k, fano, L_indep)];
+    Xc = [Xc; sample_trials(tuning_mean(pref_oris,kappa,o,baseline,gain_hi), n_tr_k, fano, L_indep)];
 end
 for o = oris_obl
-    Xo = [Xo; sample_trials(tuning_mean(pref_oris,kappa,o,baseline,gain), n_tr_k, fano, L_indep)];
+    Xo = [Xo; sample_trials(tuning_mean(pref_oris,kappa,o,baseline,gain_hi), n_tr_k, fano, L_indep)];
 end
 
-% Use two neurons that make the nonlinearity visible
-pair_k = [find_pref(pref_oris, 22), find_pref(pref_oris, 112)];
+pair_k = [find_pref(pref_oris, 22.5), find_pref(pref_oris, 67.5)];
 K2 = [Xc(:,pair_k); Xo(:,pair_k)];
 yk = [zeros(size(Xc,1),1); ones(size(Xo,1),1)];
+
+% Honest accuracies: fit on half the trials, score on the other half. The
+% training-set accuracy of an RBF SVM is nearly meaningless, since a narrow
+% kernel can memorize any data set.
+k_folds = make_folds(numel(yk), 2);
+k_tr = k_folds == 1;  k_te = ~k_tr;
 
 subplot(1,3,3); hold on
 plot(K2(yk==0,1), K2(yk==0,2), '.', 'MarkerSize', 5, 'Color',[0.20 0.40 0.85])
 plot(K2(yk==1,1), K2(yk==1,2), '.', 'MarkerSize', 5, 'Color',[0.85 0.30 0.25])
 
 if has_svm
-    mdl_lin = fitcsvm(K2, yk, 'KernelFunction','linear','Standardize',true);
-    mdl_rbf = fitcsvm(K2, yk, 'KernelFunction','rbf', ...
-                      'KernelScale','auto','BoxConstraint',1,'Standardize',true);
-    acc_lin = mean(predict(mdl_lin, K2) == yk);
-    acc_rbf = mean(predict(mdl_rbf, K2) == yk);
+    mdl_lin = fitcsvm(K2(k_tr,:), yk(k_tr), 'KernelFunction','linear', ...
+                      'Standardize',true);
+    mdl_rbf = fitcsvm(K2(k_tr,:), yk(k_tr), 'KernelFunction','rbf', ...
+                      'KernelScale', 2, 'BoxConstraint', 1, 'Standardize', true);
+    acc_lin = mean(predict(mdl_lin, K2(k_te,:)) == yk(k_te));
+    acc_rbf = mean(predict(mdl_rbf, K2(k_te,:)) == yk(k_te));
 
     % Draw the RBF decision surface
-    gx = linspace(min(K2(:,1)), max(K2(:,1)), 120);
-    gy = linspace(min(K2(:,2)), max(K2(:,2)), 120);
+    gx = linspace(min(K2(:,1)), max(K2(:,1)), 150);
+    gy = linspace(min(K2(:,2)), max(K2(:,2)), 150);
     [GX, GY] = meshgrid(gx, gy);
     [~, sc] = predict(mdl_rbf, [GX(:) GY(:)]);
     contour(GX, GY, reshape(sc(:,2), size(GX)), [0 0], 'k', 'LineWidth', 2)
-    title(sprintf('Cardinal vs oblique: linear %.2f, RBF %.2f', acc_lin, acc_rbf))
+    title(sprintf('Cardinal vs oblique (held out): linear %.2f, RBF %.2f', ...
+                  acc_lin, acc_rbf))
 else
-    [wk_, bk_] = hinge_train(K2, yk, 1);
-    acc_lin = mean(((K2*wk_ + bk_) > 0) == yk);
-    title(sprintf('Cardinal vs oblique: linear %.2f (install Stats Toolbox for RBF)', acc_lin))
+    [wk_, bk_] = hinge_train(K2(k_tr,:), yk(k_tr), 1);
+    acc_lin = mean(((K2(k_te,:)*wk_ + bk_) > 0) == yk(k_te));
+    title(sprintf('Cardinal vs oblique (held out): linear %.2f -- RBF needs the Stats Toolbox', ...
+                  acc_lin))
 end
-xlabel(sprintf('Neuron pref %.0f deg', pref_oris(pair_k(1))))
-ylabel(sprintf('Neuron pref %.0f deg', pref_oris(pair_k(2))))
+xlabel(sprintf('Neuron %d (pref %.0f deg)', pair_k(1), pref_oris(pair_k(1))))
+ylabel(sprintf('Neuron %d (pref %.0f deg)', pair_k(2), pref_oris(pair_k(2))))
 axis square
 
-% The RBF kernel implicitly maps each trial into a very high-dimensional
-% feature space where the two classes become linearly separable, then finds
-% a maximum-margin hyperplane there. The kernel trick means you never
-% compute that mapping -- you only ever evaluate inner products
+fprintf('Cardinal vs oblique, held-out accuracy: linear SVM %.3f\n', acc_lin);
+if has_svm
+    fprintf('Cardinal vs oblique, held-out accuracy: RBF SVM    %.3f\n', acc_rbf);
+end
+
+% The linear SVM sits at chance, as it must: no line separates opposite
+% corners of a square from the other two. The RBF kernel implicitly maps
+% each trial into a very high-dimensional feature space where the two
+% classes DO become linearly separable, then finds a maximum-margin
+% hyperplane there. Projected back down, that hyperplane becomes the closed
+% contours you see around the two cardinal clusters. The kernel trick means
+% you never compute the mapping -- you only ever evaluate inner products
 % k(r, r') = exp(-||r - r'||^2 / (2*sigma^2)).
+%
+% Note that both accuracies here are measured on held-out trials. The
+% training-set accuracy of an RBF SVM is close to meaningless: with a
+% narrow enough kernel it can place a small bubble around every training
+% point and score 100 percent while learning nothing.
 %
 % A word of caution before you reach for the kernel in real analyses. A
 % nonlinear classifier that beats a linear one tells you that the
@@ -877,7 +979,9 @@ axis square
 %     What happens to the decision boundary at very small and very large
 %     values? Which failure mode is overfitting?
 % (d) Construct a version of the cardinal-vs-oblique task that IS linearly
-%     separable by choosing different neurons. What does this tell you
+%     separable by choosing different neurons -- try neurons preferring 0
+%     and 90 degrees instead of 22.5 and 67.5, and work out from the tuning
+%     curves why a straight line suddenly suffices. What does this tell you
 %     about the claim that a category is "nonlinearly encoded"?
 
 
