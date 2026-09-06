@@ -85,6 +85,50 @@ An introduction to stochastic processes as they apply to neural spike trains. Th
 
 ---
 
+## Population Analysis Tutorials
+
+These two tutorials extend the core material to simulated neural population
+recordings. Both are self-contained: the population is simulated inside the
+script, so no data files are needed, and all helper functions are defined at
+the bottom of each file.
+
+### 6. PCA on Neural Populations — `PCANeuroPopTutorial.m`
+*Author: Shin Kira*
+
+A companion to `PCATutorial.m` that applies PCA to a simulated population of orientation-tuned visual neurons, shifting the emphasis from variability in single-cell responses to the geometry of population activity. Topics include:
+
+- **Why populations live in low-dimensional subspaces**: two-neuron intuition, shared vs. private input
+- **Covariance and its eigensystem**: built by hand, then verified against MATLAB's `pca`
+- **The orientation ring**: how a one-dimensional stimulus variable becomes a closed curve in PC space
+- **PC loadings as tuning-curve structure**: cosine and sine profiles over preferred orientation
+- **Decoding from the manifold**: recovering stimulus orientation with `atan2` on the first two PCs
+- **Tuning width and dimensionality**: how sharpening tuning changes the variance spectrum
+- **Two-dimensional stimuli**: orientation × spatial frequency and the toroidal manifold
+- **Fixed-axis projection**: comparing two populations in a common PC basis to quantify manifold deformation
+
+*Prerequisites:* `LinearAlgebra.m`, `PCATutorial.m`
+
+---
+
+### 7. Pattern Discrimination & Classification — `ClassificationTutorial.m`
+*Author: Shin Kira*
+
+An introduction to decoding and classification, built around a fine orientation discrimination task (88° vs. 92°) performed by a simulated population with realistic trial-to-trial variability. The tutorial makes the case that variance and discriminability are different things: the direction that best separates two stimuli is generally not the direction of largest variance. Topics include:
+
+- **Signal detection theory**: criterion, hit and false-alarm rates, ROC curves constructed by hand
+- **AUC and d-prime**: the equivalence of AUC and two-alternative forced choice, and when the Gaussian shortcut fails
+- **Neurometric functions**: why information lives in tuning-curve *slope* rather than peak response
+- **Linear discriminant analysis**: Fisher's criterion, shrinkage regularization, ill-conditioned covariance
+- **Logistic regression as a GLM**: fitting by iteratively reweighted least squares, calibration, regularization paths
+- **Support vector machines**: margins, support vectors, soft-margin trade-offs, and the RBF kernel
+- **Cross-validation**: learning curves, overfitting, nested model selection, permutation tests
+- **Decoding geometry**: signal vs. noise correlations and information-limiting correlations
+- **Nonlinear classifiers**: k-nearest neighbours and the curse of dimensionality
+
+*Prerequisites:* `LinearAlgebra.m`, `PCANeuroPopTutorial.m`, `stochasticProcessesTutorial.m`
+
+---
+
 ## Helper Scripts
 
 | File | Description |
@@ -114,7 +158,7 @@ An introduction to stochastic processes as they apply to neural spike trains. Th
 3. Open a tutorial script (e.g., `LinearAlgebra.m`) and run it section by section using **Ctrl+Enter** (or **Cmd+Enter** on Mac) to execute one cell at a time.
 4. Read the comments carefully — the narrative explanations and homework questions are embedded in the code.
 
-MATLAB R2014b or later is recommended. No additional toolboxes beyond the Statistics and Signal Processing Toolboxes are required.
+MATLAB R2014b or later is recommended. No additional toolboxes beyond the Statistics and Signal Processing Toolboxes are required. `ClassificationTutorial.m` implements its methods from scratch and uses the Statistics Toolbox only for the optional support vector machine section, falling back to a hand-written classifier when `fitcsvm` is unavailable.
 
 ---
 
@@ -122,4 +166,4 @@ MATLAB R2014b or later is recommended. No additional toolboxes beyond the Statis
 
 **Course:** NEUBEH/PBIO 545 – Quantitative Methods in Neuroscience  
 **Institution:** University of Washington  
-**Topics:** Linear algebra, dimensionality reduction, Fourier analysis, dynamical systems, stochastic processes  
+**Topics:** Linear algebra, dimensionality reduction, Fourier analysis, dynamical systems, stochastic processes, population geometry, neural decoding and classification  
