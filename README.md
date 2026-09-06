@@ -8,19 +8,21 @@ This repository contains the tutorial material for **NEUBEH/PBIO 545: Quantitati
 
 ```
 matlab/     MATLAB tutorial scripts, helper functions, and data files
-python/     Jupyter notebook versions of the tutorials (in progress)
+python/     Jupyter notebook versions of the tutorials
 ```
 
-The MATLAB scripts are the original course material and are complete. The
-Python notebooks mirror the same topics; see `python/README.md` for setup.
+The MATLAB scripts are the original course material. The Python notebooks cover
+the same seven topics, with the narrative in markdown cells and each core method
+implemented from scratch before being checked against the SciPy/scikit-learn
+equivalent. See `python/README.md` for setup.
 
 | Tutorial | MATLAB | Python |
 |---|---|---|
-| Linear Algebra | ✅ | — |
-| Principal Components Analysis | ✅ | — |
-| Fourier Analysis | ✅ | — |
-| Dynamical Systems & Differential Equations | ✅ | — |
-| Stochastic Processes | ✅ | — |
+| Linear Algebra | ✅ | ✅ |
+| Principal Components Analysis | ✅ | ✅ |
+| Fourier Analysis | ✅ | ✅ |
+| Dynamical Systems & Differential Equations | ✅ | ✅ |
+| Stochastic Processes | ✅ | ✅ |
 | PCA on Neural Populations | ✅ | ✅ |
 | Pattern Discrimination & Classification | ✅ | ✅ |
 
@@ -31,7 +33,8 @@ Python notebooks mirror the same topics; see `python/README.md` for setup.
 File paths below are relative to `matlab/`.
 
 ### 1. Linear Algebra — `LinearAlgebra.m`
-*Author: Fred Rieke*
+*Author: Fred Rieke*  
+*Also available as:* [`python/LinearAlgebra.ipynb`](python/LinearAlgebra.ipynb)
 
 A visual and applied introduction to linear algebra, progressing from vector geometry through matrix transformations to the eigensystem. The tutorial emphasizes geometric intuition alongside computation. Topics include:
 
@@ -48,7 +51,8 @@ A visual and applied introduction to linear algebra, progressing from vector geo
 ---
 
 ### 2. Principal Components Analysis — `PCATutorial.m`
-*Author: Fred Rieke*
+*Author: Fred Rieke*  
+*Also available as:* [`python/PCATutorial.ipynb`](python/PCATutorial.ipynb)
 
 A self-contained introduction to PCA grounded in real electrophysiology data. The tutorial builds from first principles — covariance, correlation, and the eigensystem — to a practical application characterizing variability in rod photoreceptor single-photon responses. Topics include:
 
@@ -63,7 +67,8 @@ A self-contained introduction to PCA grounded in real electrophysiology data. Th
 ---
 
 ### 3. Fourier Analysis — `FourierTutorial.m`
-*Authors: Mike Shadlen, Adrienne Fairhall*
+*Authors: Mike Shadlen, Adrienne Fairhall*  
+*Also available as:* [`python/FourierTutorial.ipynb`](python/FourierTutorial.ipynb)
 
 A thorough introduction to the Fourier transform and its applications in neuroscience. The tutorial emphasizes both conceptual understanding and practical fluency with MATLAB's `fft` function. Topics include:
 
@@ -77,7 +82,8 @@ A thorough introduction to the Fourier transform and its applications in neurosc
 ---
 
 ### 4. Dynamical Systems & Differential Equations — `DiffEQTutorial.m`
-*Author: Fred Rieke*
+*Author: Fred Rieke*  
+*Also available as:* [`python/DiffEQTutorial.ipynb`](python/DiffEQTutorial.ipynb)
 
 A practical introduction to ordinary differential equations (ODEs) solved numerically using the finite difference (Euler) method. The tutorial is organized around a biologically grounded sequence of examples culminating in a mechanistic model of phototransduction. Topics include:
 
@@ -93,7 +99,8 @@ A practical introduction to ordinary differential equations (ODEs) solved numeri
 ---
 
 ### 5. Stochastic Processes — `stochasticProcessesTutorial.m`
-*Authors: Michael N. Shadlen, Greg Horwitz*
+*Authors: Michael N. Shadlen, Greg Horwitz*  
+*Also available as:* [`python/StochasticProcessesTutorial.ipynb`](python/StochasticProcessesTutorial.ipynb)
 
 An introduction to stochastic processes as they apply to neural spike trains. The tutorial begins with renewal processes and the statistical description of interspike intervals (ISIs), then builds toward a rigorous treatment of the Poisson process and its remarkable properties. Topics covered include:
 
