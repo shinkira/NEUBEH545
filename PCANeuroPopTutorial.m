@@ -1,4 +1,4 @@
-%% PCA_NeuralPopulation_Tutorial.m
+%% PCANeuroPopTutorial.m
 %
 % Principal Components Analysis of Neural Population Data
 %
