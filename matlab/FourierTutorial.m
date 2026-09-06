@@ -151,7 +151,12 @@ delt1 = f6;
 % turns on at a rate of 10 times per second (10 Hz). But it is also a sum
 % of discrete delta functions.
 
-f7 = mod(t,.1)==0;
+% NOTE: do not test floating-point values for equality.  mod(t,.1)==0 misses
+% most of the teeth (it finds only t = 0, .1, .2, .4, .8), so the "comb" was
+% neither periodic nor 10 teeth long, and every spectrum computed from it below
+% was not the spectrum of a comb.  Build it by index instead.
+f7 = zeros(size(t));
+f7(1:round(.1/dt):end) = 1;
 comb10 = f7;
 stem(t,comb10,'filled')
 
@@ -790,7 +795,9 @@ length(t)
 % time) or a line (if it were light intensity as a function of horizontal
 % position).
 
-load Fourier.mat
+% NOTE: Fourier.mat is not part of this repository, and nothing here needs it -
+% t, dt and tmax are all defined at the top of this tutorial.
+% load Fourier.mat
 timeOfImpulse = .1
 s1 = zeros(size(t)); s1(t==timeOfImpulse)=1;
 figure(1),clf,plot(t,s1)

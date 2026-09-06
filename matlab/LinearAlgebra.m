@@ -914,7 +914,13 @@ S = InitialS + DeltaT * T * InitialS;
 %	T S(t) = sum_n a_n(t) T e_n = sum_n a_n(t) l_n e_n
 % Putting this stuff together we have
 % 	sum_n e_n(t) da_n(t)/dt = sum_n a_n(t) l_n e_n
-% We can use the orthogonality of the e_n to pull out
+% We can use the linear independence of the e_n to pull out
+% (NOTE: T here is not symmetric, so its eigenvectors are NOT orthogonal - for
+% this T they sit at 49, 64 and 78 degrees to each other.  What lets us separate
+% the coefficients is that the e_n form a basis, together with the biorthogonality
+% of the left and right eigenvectors: the rows of inv(E) are orthogonal to the
+% columns of E belonging to different eigenvalues.  Orthogonality of the
+% eigenvectors themselves holds only for symmetric matrices.)
 % each a_n(t):
 %	da_n(t)/dt = l_n a_n(t)
 % Hence
@@ -996,8 +1002,10 @@ legend('closed','open','inactivated');
 %		and inactivated states?
 %	(3) How long does it take the above channel model to get within 1% of the 
 %		steady state values?  Can you explain where this time scale comes from?
-%	(4) use the orthogonality property of eigenvectors to show the result for 
-%		the a_n(t) coefficients above.
+%	(4) T is not symmetric, so its eigenvectors are not orthogonal.  Verify this
+%		numerically, then show that they are still linearly independent, and use
+%		that (not orthogonality) to derive the result for the a_n(t) coefficients
+%		above.  Which step of the derivation would orthogonality have simplified?
 %	(5) Confirm that both approaches described above yield the same steady state
 %		values for each channel state.
 
