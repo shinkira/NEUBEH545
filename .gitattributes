@@ -1,0 +1,15 @@
+# Keep line endings uniform. Several of these files began life on classic Mac
+# OS with CR-only endings, which made git treat each whole file as a single
+# line: no usable diff, no line numbers, no blame, no line comments.
+*.m        text eol=lf
+*.ipynb    text eol=lf
+*.md       text eol=lf
+*.txt      text eol=lf
+
+# MATLAB data files are binary; never touch their bytes.
+*.mat      binary
+
+# Strip notebook outputs on commit. The filter itself is per-clone and lives
+# in .git/config -- declaring it here only records the intent, so a fresh
+# clone still needs:  pip install nbstripout && nbstripout --install
+*.ipynb    filter=nbstripout
