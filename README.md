@@ -22,7 +22,7 @@ Python notebooks mirror the same topics; see `python/README.md` for setup.
 | Dynamical Systems & Differential Equations | ✅ | — |
 | Stochastic Processes | ✅ | — |
 | PCA on Neural Populations | ✅ | ✅ |
-| Pattern Discrimination & Classification | ✅ | — |
+| Pattern Discrimination & Classification | ✅ | ✅ |
 
 ---
 
@@ -149,7 +149,8 @@ An introduction to decoding and classification, built around a fine orientation 
 - **Decoding geometry**: signal vs. noise correlations and information-limiting correlations
 - **Nonlinear classifiers**: k-nearest neighbours and the curse of dimensionality
 
-*Prerequisites:* `LinearAlgebra.m`, `PCANeuroPopTutorial.m`, `stochasticProcessesTutorial.m`
+*Prerequisites:* `LinearAlgebra.m`, `PCANeuroPopTutorial.m`, `stochasticProcessesTutorial.m`  
+*Also available as:* [`python/ClassificationTutorial.ipynb`](python/ClassificationTutorial.ipynb)
 
 ---
 
