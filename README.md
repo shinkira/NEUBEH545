@@ -14,6 +14,16 @@ python/     Jupyter notebook versions of the tutorials (in progress)
 The MATLAB scripts are the original course material and are complete. The
 Python notebooks mirror the same topics; see `python/README.md` for setup.
 
+| Tutorial | MATLAB | Python |
+|---|---|---|
+| Linear Algebra | ✅ | — |
+| Principal Components Analysis | ✅ | — |
+| Fourier Analysis | ✅ | — |
+| Dynamical Systems & Differential Equations | ✅ | — |
+| Stochastic Processes | ✅ | — |
+| PCA on Neural Populations | ✅ | ✅ |
+| Pattern Discrimination & Classification | ✅ | — |
+
 ---
 
 ## Tutorials
@@ -119,7 +129,8 @@ A companion to `PCATutorial.m` that applies PCA to a simulated population of ori
 - **Two-dimensional stimuli**: orientation × spatial frequency and the toroidal manifold
 - **Fixed-axis projection**: comparing two populations in a common PC basis to quantify manifold deformation
 
-*Prerequisites:* `LinearAlgebra.m`, `PCATutorial.m`
+*Prerequisites:* `LinearAlgebra.m`, `PCATutorial.m`  
+*Also available as:* [`python/PCANeuroPopTutorial.ipynb`](python/PCANeuroPopTutorial.ipynb)
 
 ---
 
