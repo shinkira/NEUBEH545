@@ -1,0 +1,10 @@
+# Core scientific stack for the Python/Jupyter tutorials
+numpy>=1.24
+scipy>=1.10
+matplotlib>=3.7
+pandas>=2.0
+scikit-learn>=1.3
+jupyterlab>=4.0
+
+# Keeps notebook outputs out of git history (see python/README.md)
+nbstripout>=0.7
