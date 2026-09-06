@@ -1,4 +1,4 @@
-%% Classification_NeuralPopulation_Tutorial.m
+%% ClassificationTutorial.m
 %
 % Pattern Discrimination and Classification of Neural Population Data
 %
