@@ -11,20 +11,11 @@ matlab/     MATLAB tutorial scripts, helper functions, and data files
 python/     Jupyter notebook versions of the tutorials
 ```
 
-The MATLAB scripts are the original course material. The Python notebooks cover
-the same seven topics, with the narrative in markdown cells and each core method
-implemented from scratch before being checked against the SciPy/scikit-learn
-equivalent. See `python/README.md` for setup.
-
-| Tutorial | MATLAB | Python |
-|---|---|---|
-| Linear Algebra | ✅ | ✅ |
-| Principal Components Analysis | ✅ | ✅ |
-| Fourier Analysis | ✅ | ✅ |
-| Dynamical Systems & Differential Equations | ✅ | ✅ |
-| Stochastic Processes | ✅ | ✅ |
-| PCA on Neural Populations | ✅ | ✅ |
-| Pattern Discrimination & Classification | ✅ | ✅ |
+Every tutorial is available in both languages. The MATLAB scripts are the
+original course material; the Python notebooks cover the same seven topics,
+with the narrative in markdown cells and each core method implemented from
+scratch before being checked against the SciPy/scikit-learn equivalent. See
+`python/README.md` for setup.
 
 ---
 
@@ -33,7 +24,6 @@ equivalent. See `python/README.md` for setup.
 File paths below are relative to `matlab/`.
 
 ### 1. Linear Algebra — `LinearAlgebra.m`
-*Author: Fred Rieke*  
 *Also available as:* [`python/LinearAlgebra.ipynb`](python/LinearAlgebra.ipynb)
 
 A visual and applied introduction to linear algebra, progressing from vector geometry through matrix transformations to the eigensystem. The tutorial emphasizes geometric intuition alongside computation. Topics include:
@@ -51,7 +41,6 @@ A visual and applied introduction to linear algebra, progressing from vector geo
 ---
 
 ### 2. Principal Components Analysis — `PCATutorial.m`
-*Author: Fred Rieke*  
 *Also available as:* [`python/PCATutorial.ipynb`](python/PCATutorial.ipynb)
 
 A self-contained introduction to PCA grounded in real electrophysiology data. The tutorial builds from first principles — covariance, correlation, and the eigensystem — to a practical application characterizing variability in rod photoreceptor single-photon responses. Topics include:
@@ -67,7 +56,6 @@ A self-contained introduction to PCA grounded in real electrophysiology data. Th
 ---
 
 ### 3. Fourier Analysis — `FourierTutorial.m`
-*Authors: Mike Shadlen, Adrienne Fairhall*  
 *Also available as:* [`python/FourierTutorial.ipynb`](python/FourierTutorial.ipynb)
 
 A thorough introduction to the Fourier transform and its applications in neuroscience. The tutorial emphasizes both conceptual understanding and practical fluency with MATLAB's `fft` function. Topics include:
@@ -82,7 +70,6 @@ A thorough introduction to the Fourier transform and its applications in neurosc
 ---
 
 ### 4. Dynamical Systems & Differential Equations — `DiffEQTutorial.m`
-*Author: Fred Rieke*  
 *Also available as:* [`python/DiffEQTutorial.ipynb`](python/DiffEQTutorial.ipynb)
 
 A practical introduction to ordinary differential equations (ODEs) solved numerically using the finite difference (Euler) method. The tutorial is organized around a biologically grounded sequence of examples culminating in a mechanistic model of phototransduction. Topics include:
@@ -99,7 +86,6 @@ A practical introduction to ordinary differential equations (ODEs) solved numeri
 ---
 
 ### 5. Stochastic Processes — `stochasticProcessesTutorial.m`
-*Authors: Michael N. Shadlen, Greg Horwitz*  
 *Also available as:* [`python/StochasticProcessesTutorial.ipynb`](python/StochasticProcessesTutorial.ipynb)
 
 An introduction to stochastic processes as they apply to neural spike trains. The tutorial begins with renewal processes and the statistical description of interspike intervals (ISIs), then builds toward a rigorous treatment of the Poisson process and its remarkable properties. Topics covered include:
@@ -123,7 +109,6 @@ script, so no data files are needed, and all helper functions are defined at
 the bottom of each file.
 
 ### 6. PCA on Neural Populations — `PCANeuroPopTutorial.m`
-*Author: Shin Kira*
 
 A companion to `PCATutorial.m` that applies PCA to a simulated population of orientation-tuned visual neurons, shifting the emphasis from variability in single-cell responses to the geometry of population activity. Topics include:
 
@@ -142,7 +127,6 @@ A companion to `PCATutorial.m` that applies PCA to a simulated population of ori
 ---
 
 ### 7. Pattern Discrimination & Classification — `ClassificationTutorial.m`
-*Author: Shin Kira*
 
 An introduction to decoding and classification, built around a fine orientation discrimination task (88° vs. 92°) performed by a simulated population with realistic trial-to-trial variability. The tutorial makes the case that variance and discriminability are different things: the direction that best separates two stimuli is generally not the direction of largest variance. Topics include:
 
