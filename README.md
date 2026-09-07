@@ -143,6 +143,29 @@ An introduction to decoding and classification, built around a fine orientation 
 *Prerequisites:* `LinearAlgebra.m`, `PCANeuroPopTutorial.m`, `stochasticProcessesTutorial.m`  
 *Also available as:* [`python/ClassificationTutorial.ipynb`](python/ClassificationTutorial.ipynb)
 
+### 8. Generalized Linear Models — `python/GLMTutorial.ipynb`
+*Also available as:* MATLAB version pending
+
+An introduction to GLMs as **encoding** models, complementing the decoding direction taken by
+the classification tutorial. Built around a simulated delayed match-to-sample task in a
+virtual T-maze, with running speed deliberately correlated with cue identity, so that the
+central methodological problem is unavoidable: a neuron driven purely by running speed looks
+strongly cue-selective to any analysis that ignores movement. Topics include:
+
+- **The Poisson GLM**: log link, multiplicative effects, likelihood and deviance
+- **Fitting by IRLS**: implemented from scratch, then checked against statsmodels
+- **Design matrices from trial structure**: cue × epoch indicators, raised-cosine speed bases, time lags
+- **Fraction of deviance explained** on held-out data as the GLM analogue of R²
+- **Cross-validation by trial rather than frame**, and an honest test of when that matters
+- **Elastic-net regularization**: why glmnet uses α ≈ 0.95, and `lambda_min` vs `lambda_1se`
+- **Nested model comparison**: ΔFDE as the selectivity measure that survives a movement confound
+- **Permutation testing** by shuffling trial labels, and why frame-wise shuffling inflates significance
+
+*Prerequisites:* `LinearAlgebra.m`, `ClassificationTutorial.m`  
+*Adapted from:* a DMTS GLM pipeline (`GlmnetDmtsDemo`)
+
+---
+
 ---
 
 ## Helper Scripts

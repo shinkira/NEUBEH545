@@ -3,7 +3,7 @@
 #
 # Tested: all seven notebooks run end to end on Python 3.14 with
 #   numpy 2.5.3, scipy 1.18.1, matplotlib 3.11.1, scikit-learn 1.9.0,
-#   jupyterlab 4.6.3
+#   statsmodels 0.15.0, jupyterlab 4.6.3
 # producing 113 figures with no errors and no deprecation warnings.
 #
 # The floors below are deliberately loose so the notebooks still install on an
@@ -15,6 +15,7 @@ numpy>=1.26
 scipy>=1.11
 matplotlib>=3.8
 scikit-learn>=1.4
+statsmodels>=0.14      # Poisson GLM and elastic net (GLMTutorial)
 jupyterlab>=4.2
 
 # Keeps notebook outputs out of git history (see README.md)
