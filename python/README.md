@@ -6,13 +6,28 @@ markdown cells — the same structure as the MATLAB scripts in `../matlab/`.
 
 ## Setup
 
+These notebooks target **Python 3.14**, the current stable release. Anything
+from 3.11 up will work, but 3.9 and 3.10 are past end of life and recent
+numpy and scipy no longer publish wheels for them.
+
+If you do not already have a recent Python:
+
+```bash
+brew install python@3.14                 # macOS, via Homebrew
+```
+
+or download the installer from https://www.python.org/downloads/. Then:
+
 ```bash
 cd python
-python3 -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
+python3.14 -m venv .venv                 # name the version explicitly
+source .venv/bin/activate                # Windows: .venv\Scripts\activate
+python -m pip install -r requirements.txt
 jupyter lab
 ```
+
+Naming the interpreter explicitly (`python3.14` rather than `python3`) means
+you get the version you meant even if an older one comes first on `PATH`.
 
 ## A note on committing notebooks
 
@@ -27,6 +42,11 @@ To avoid this, strip outputs automatically before each commit:
 python3 -m pip install nbstripout
 python3 -m nbstripout --install      # run once, inside this repository
 ```
+
+Install it for whichever interpreter `python3` resolves to, not inside the
+`.venv` above — git runs the filter outside your virtual environment. If you
+later upgrade Python, reinstall `nbstripout` for the new one, or commits of
+notebooks will start failing.
 
 Use the `python3 -m ...` form rather than the bare `pip` and `nbstripout`
 commands: on macOS neither is reliably on `PATH`, and the module form works

@@ -196,12 +196,13 @@ MATLAB R2014b or later is recommended. No additional toolboxes beyond the Statis
 
 ### Python / Jupyter
 
-See [`python/README.md`](python/README.md) for environment setup. In short:
+Targets **Python 3.14** (current stable); 3.11 or newer works. See
+[`python/README.md`](python/README.md) for full setup. In short:
 
 ```bash
 cd python
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+python3.14 -m venv .venv && source .venv/bin/activate
+python -m pip install -r requirements.txt
 jupyter lab
 ```
 
